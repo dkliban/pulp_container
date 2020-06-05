@@ -4,8 +4,27 @@ import jwt
 from aiohttp import web
 from django.conf import settings
 
+from rest_framework.authentication import BaseAuthentication
+
 CONTENT_HOST = re.sub(r'(http://|https://)', '', settings.CONTENT_ORIGIN, count=1)
 
+
+class TokenAuthentication(BaseAuthentication):
+    """
+    Simple token based authentication.
+    Clients should authenticate by passing the token key in the "Authorization"
+    HTTP header, prepended with the string "Token ".  For example:
+        Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a
+    """
+
+    keyword = 'Token'
+
+    def authenticate(self, request):
+
+        TokenVerifier.verify_from(request, 'pull')
+
+    def authenticate_header(self, request):
+        return self.keyword
 
 class TokenVerifier:
     """A class used for a token verification."""

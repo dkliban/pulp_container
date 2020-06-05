@@ -49,8 +49,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.views import APIView
 
-from . import models, serializers, tasks
-
+from pulp_container.app import models, serializers, tasks
+from pulp_container.app.token_verification import TokenAuthentication
 
 log = logging.getLogger(__name__)
 
@@ -569,7 +569,7 @@ class VersionView(APIView):
     """
 
     # allow anyone to access
-    authentication_classes = []
+    authentication_classes = [TokenAuthentication]
     permission_classes = []
 
     def get(self, request):
