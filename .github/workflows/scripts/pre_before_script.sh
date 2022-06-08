@@ -15,7 +15,7 @@ echo $PULP_HOSTNAME | docker exec -i pulp bash -c "cat >> /etc/hosts"
 echo "machine pulp.example.com
 login admin
 password password
-" >> ~/.netrc
+" | cmd_stdin_prefix bash -c "cat > /root/.netrc"
 
 sed -i 's/https:\/\/pulp/https:\/\/pulp.example.com/g' $PWD/.github/workflows/scripts/script.sh
 sed -i 's/\"hostname\": \"pulp\",/\"hostname\": \"pulp.example.com\",/g' ~/.config/pulp_smash/settings.json
